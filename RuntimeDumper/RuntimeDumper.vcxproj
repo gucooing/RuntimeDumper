@@ -115,10 +115,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
-    <None Include=".gitmodules" />
-    <None Include="RuntimeDumper.ini" />
-    <None Include="README.md" />
+    <None Include="../.gitignore" />
+    <None Include="../.gitmodules" />
+    <None Include="../RuntimeDumper.ini" />
+    <None Include="../README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

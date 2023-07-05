@@ -9,6 +9,44 @@ namespace util
 		std::cout << "[RuntimeDumper] " << text << std::endl;
 	}
 
+  std::optional<fs::path> this_dir()
+  {
+    HMODULE mod = NULL;
+    TCHAR path[MAX_PATH]{};
+
+    if (!GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCWSTR)&this_dir, &mod))
+    {
+        printf("GetModuleHandleEx failed (%i)\n", GetLastError());
+        return std::nullopt;
+    }
+    if (!GetModuleFileName(mod, path, MAX_PATH))
+    {
+        printf("GetModuleFileName failed (%i)\n", GetLastError());
+        return std::nullopt;
+    }
+
+    return fs::path(path).remove_filename();
+  }
+
+	std::optional<std::string> read_whole_file(const fs::path& file)
+	{
+    try
+    {
+      std::stringstream buf;
+      std::ifstream ifs(file);
+      if (!ifs.is_open())
+          return std::nullopt;
+      ifs.exceptions(std::ios::failbit);
+      buf << ifs.rdbuf();
+      return buf.str();
+    }
+  	catch (const std::ios::failure&)
+    {
+      return std::nullopt;
+    }
+	}
+
+
 	void Logf(const char *fmt, ...)
 	{
 		char text[1024];
